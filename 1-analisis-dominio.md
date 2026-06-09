@@ -18,7 +18,7 @@ Para mi tabla de reservas necesito las tablas:
 | fecha           | DATE      | SÍ       | Saber que día se reserva                            |
 | hora_inicio     | TIME      | SÍ       | A qué hora empieza                                  |
 | hora_fin        | TIME      | SÍ       | A qué hora termina                                  |
-| coste           | DOUBLE    | SÍ       | Saber el precio de la reserva                       |
+| coste           | DECIMAL   | SÍ       | Saber el precio de la reserva                       |
 | numnero_plazas  | INT       | SÍ       | Cantidad de plazas de la reserva                    |
 | motivo          | VARCHAR   | SÍ       | Motivo de la reserva                                |
 | observaciones   | VARCHAR   | SÍ       | Observaciones                                       |
