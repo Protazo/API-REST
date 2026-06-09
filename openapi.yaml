@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: Sistema reservas Pedro
+  version: 1.0.0
+  description: Mi documentación de openAPI para el trabajo de proyecto intermodular.
+servers:
+  - url: https://localhost:3000/miapirest
+    description: Servidor principal de la API
+
+paths:
+  /reservas:
+    get:
+      summary: Listar todas las reservas
+      description: Obtiene un array con todas las reservas creadas
+      responses:
+        '200':
+          description: Lista de reservas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservas'
+        '500':
+          description: Error del servidor
+
+    post:
+      summary: Crear una nueva reserva
+      description: Añade una reserva la base de datos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservaInput'
+      responses:
+        '201':
+          description: Reserva creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservas'
+        '400':
+          description: Datos inválidos
+
+  /reservas/{id}:
+    patch:
+      summary: Actualizar una reserva
+      description: Actualiza los datos de una reserva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                disponible:
+                  type: boolean
+      responses:
+        '200':
+          description: Reserva actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservas'
+        '404':
+          description: La reserva no se ha encontrado  
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+    delete:
+      summary: Eliminar una reserva
+      description: Elimina una reserva al completo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: La reserva se ha eliminado correctamente
+        '404':
+          description: No se ha encontrado la reserva
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+      Reservas:
+        type: object
+        required:
+          - id_recurso
+          - nombre_recurso
+          - id_reserva_local
+          - id_usuario
+          - nombre_usuario
+          - fecha
+          - hora_inicio
+          - hora_fin
+          - coste
+          - numero_plazas
+          - motivo
+          - observaciones
+
+        properties:
+          id_recurso:
+            type: integer
+            example: 1
+          nombre_recurso:
+            type: string
+            example: "Nombre de un recurso"
+          id_reserva_local:
+            type: integer
+            example: 1
+          id_usuario: 
+            type: integer
+            example: 1  
+          nombre_usuario:
+            type: string
+            example: "Carlos Maciá"  
+          fecha:
+            type: string
+            format: date
+            example: "2026-07-07"
+          hora_inicio:
+            type: string
+            format: time
+            example: "10:00:00"
+          hora_fin:
+            type: string
+            format: time
+            example: "12:00:00"
+          coste:
+            type: number
+            format: decimal
+            example: 20.00
+          numero_plazas:
+            type: integer
+            example: 10
+          motivo:
+            type: string
+            minLength: 1
+            maxLength: 100
+            example: "Texto de prueba motivo"
+          observaciones:
+            type: string
+            minLength: 1
+            maxLength: 100
+            example: "Texto de prueba observación"
+          
+      ReservaInput:
+        type: object
+        required:
+          - id_recurso
+          - id_reserva_local
+          - id_usuario
+          - fecha
+          - hora_inicio
+          - hora_fin
+          - coste
+          - numero_plazas
+          - motivo
+          - observaciones
+        properties:
+          id_recurso:
+            type: integer
+            example: 1
+          id_reserva_local:
+            type: integer
+            example: 1
+          id_usuario: 
+            type: integer
+            example: 1  
+          fecha:
+            type: string
+            format: date
+            example: "2026-06-22"
+          hora_inicio:
+            type: string
+            format: time
+            example: "10:00:00"
+          hora_fin:
+            type: string
+            format: time
+            example: "17:00:00"
+          coste:
+            type: number
+            format: decimal
+            example: 20.00
+          numero_plazas:
+            type: integer
+            example: 10
+          motivo:
+            type: string
+            minLength: 1
+            maxLength: 100
+            example: "Haciendo una reserva para probar"
+          observaciones:
+            type: string
+            minLength: 1
+            maxLength: 100
+            example: "No se ha de tener en cuenta esta reserva"
+          
+      Error:
+        type: object
+        properties:
+          codigo:
+            type: string
+            example: "VALIDATION_ERROR"
+          mensaje:
+            type: string
+            example: "Hay varios errores"
+          errores:
+            type: array
+            items:
+              type: object
+              required:
+                - codigo
+                - mensaje
+              properties:
+                codigo:
+                  type: string
+                  example: "NOT_FOUND"
+                mensaje:
+                  type: string
+                  example: "No se ha encontrado la reserva"  
