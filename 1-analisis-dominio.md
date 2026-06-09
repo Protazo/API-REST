@@ -82,8 +82,10 @@ La respuesta que el backend devolvería al crear la reserva incluiría los campo
 ```json
 {
   "id_recurso": 34,
+  "nombre_recurso": "Sala de juntas 1",
   "id_reserva_local": 1,
   "id_usuario": 3,
+  "nombre_usuario": "Gerardo Ramírez",
   "fecha": "2026-07-07",
   "hora_inicio": "09:00",
   "hora_fin": "11:00",
